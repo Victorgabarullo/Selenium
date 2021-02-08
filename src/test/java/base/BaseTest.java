@@ -29,10 +29,10 @@ public class BaseTest {
         System.out.println(driver.getTitle());
 
         //esta es la forma de encontrar un elemento, singular. (Trae el primero)
-        /*
+
         WebElement inputsLink  = driver.findElement(By.linkText("Inputs"));
         inputsLink.click();
-        */
+
 
         //Esta es la forma de tarer una lista de elementos. Se deben almanecnar en una lista
         //de WebElements
