@@ -45,4 +45,14 @@ public class HomePage {
         return new HorizontalSliderPage(driver);
     }
 
+    public AlertPage clickOnAlertPage(){
+        clickLink("JavaScript Alerts");
+        return new AlertPage(driver);
+    }
+
+    public FileUploadPage clickOnFileUpload(){
+        clickLink("File Upload");
+        return new FileUploadPage(driver);
+    }
+
 }
