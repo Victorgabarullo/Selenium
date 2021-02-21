@@ -22,5 +22,4 @@ public class ForgotPassPage {
         driver.findElement(retireveButton).click();
         return new EmailSendPage(driver);
     }
-
 }

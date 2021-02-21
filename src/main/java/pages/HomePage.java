@@ -30,4 +30,19 @@ public class HomePage {
         return new ForgotPassPage(driver);
     }
 
+    public HoverPage clickOnHover(){
+        clickLink("Hovers");
+        return new HoverPage(driver);
+    }
+
+    public KeyPressPage clickOnKeyPress(){
+        clickLink("Key Presses");
+        return new KeyPressPage(driver);
+    }
+
+    public HorizontalSliderPage clickOnHorizontalSlider(){
+        clickLink("Horizontal Slider");
+        return new HorizontalSliderPage(driver);
+    }
+
 }
