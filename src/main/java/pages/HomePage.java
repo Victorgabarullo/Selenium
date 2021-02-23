@@ -55,4 +55,19 @@ public class HomePage {
         return new FileUploadPage(driver);
     }
 
+    public ContextMenuPage clickOnContextMenu(){
+        clickLink("Context Menu");
+        return new ContextMenuPage(driver);
+    }
+
+    public WysiwygPage clickOnWysiwyg(){
+        clickLink("WYSIWYG Editor");
+        return new WysiwygPage(driver);
+    }
+
+    public FramesPage clickOnFramesLink(){
+        clickLink("Frames");
+        return new FramesPage(driver);
+    }
+
 }
