@@ -2,6 +2,7 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import utils.WindowsManager;
 
 public class HomePage {
     private WebDriver driver;
@@ -73,6 +74,21 @@ public class HomePage {
     public DynamicLoadingPage clickOnDynamicLoading(){
         clickLink("Dynamic Loading");
         return new DynamicLoadingPage(driver);
+    }
+
+    public LargeAndDeepDomPage clickOnLargeAndDeepDom(){
+        clickLink("Large & Deep DOM");
+        return new LargeAndDeepDomPage(driver);
+    }
+
+    public InfiniteScrollPage clickOnInfiniteScroll(){
+        clickLink("Infinite Scroll");
+        return new InfiniteScrollPage(driver);
+    }
+
+    public MultipleWindowsPage clickOnMultipleWindows(){
+        clickLink("Multiple Windows");
+        return new MultipleWindowsPage(driver);
     }
 
 
