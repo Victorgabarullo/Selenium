@@ -70,4 +70,10 @@ public class HomePage {
         return new FramesPage(driver);
     }
 
+    public DynamicLoadingPage clickOnDynamicLoading(){
+        clickLink("Dynamic Loading");
+        return new DynamicLoadingPage(driver);
+    }
+
+
 }

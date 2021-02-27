@@ -10,6 +10,7 @@ import org.testng.annotations.BeforeMethod;
 import pages.HomePage;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class BaseTest {
     private WebDriver driver;
@@ -21,6 +22,7 @@ public class BaseTest {
         driver = new ChromeDriver();
         goHome();
         driver.manage().window().maximize();
+        driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
         homePage = new HomePage(driver);
     }
 
