@@ -8,10 +8,10 @@ import static org.testng.Assert.assertEquals;
 
 public class KeyPressTest extends BaseTest {
     @Test
-    public void testBakspace(){
+    public void testBackspace(){
         var keyPage = homePage.clickOnKeyPress();
         keyPage.enterKeys("F" + Keys.BACK_SPACE );
-        assertEquals(keyPage.getResultText(),"You entered: BACK_SPACE","Is not the expected result");
+        assertEquals(keyPage.getResultText(),"You entered: BCK_SPACE","Is not the expected result");
     }
 
     @Test
