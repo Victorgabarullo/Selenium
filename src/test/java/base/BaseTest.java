@@ -1,69 +1,83 @@
 package base;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import com.google.common.io.Files;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import pages.HomePage;
+import utils.EventReporter;
+import utils.WindowsManager;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class BaseTest {
-    private WebDriver driver;
+    private EventFiringWebDriver driver;
+    protected HomePage homePage;
 
+    @BeforeClass
     public void setUp(){
         System.setProperty("webdriver.chrome.driver", "fuentes/chromedriver.exe");
-        driver = new ChromeDriver();
-        //con este get buscamos la url
-        driver.get("https://the-internet.herokuapp.com/");
-
-        //con esta sentencia estoy maximizando la pantalla.
+        driver = new EventFiringWebDriver(new ChromeDriver(getChromeOptions()));
+        driver.register(new EventReporter());
         driver.manage().window().maximize();
+        driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
+        goHome();
 
-        //con full screen la pone en pantalla completa
-        //driver.manage().window().fullscreen();
+    }
 
-        //con esta estoy seteando el tamaño de la pantalla
-        //driver.manage().window().setSize(new Dimension(360, 640));
+    @BeforeMethod
+    public void goHome(){
+        driver.get("https://the-internet.herokuapp.com/");
+        homePage = new HomePage(driver);
+    }
 
-        System.out.println(driver.getTitle());
-
-        //esta es la forma de encontrar un elemento, singular. (Trae el primero)
-
-        WebElement inputsLink  = driver.findElement(By.linkText("Inputs"));
-        inputsLink.click();
-
-
-        //Esta es la forma de tarer una lista de elementos. Se deben almanecnar en una lista
-        //de WebElements
-        List<WebElement> links = driver.findElements(By.tagName("a"));
-        System.out.println(links.size());
-
-        //close cierra la pestaña pero quit cierra toda la ventana
+    @AfterClass
+    public void closeTest(){
         driver.quit();
     }
 
-    public void exercise(){
-        System.setProperty("webdriver.chrome.driver", "fuentes/chromedriver.exe");
-        driver = new ChromeDriver();
-        driver.get("https://the-internet.herokuapp.com/");
-
-        driver.manage().window().maximize();
-
-        WebElement link1 = driver.findElement(By.linkText("Shifting Content"));
-        link1.click();
-        WebElement link2 = driver.findElement(By.linkText("Example 1: Menu Element"));
-        link2.click();
-        List<WebElement> lista = driver.findElements(By.tagName("li"));
-        System.out.println(lista.size());
-        driver.quit();
-
+    public WindowsManager getWindowManager(){
+        return new WindowsManager(driver);
     }
 
-
-    public static void main(String[] args) {
-        BaseTest test = new BaseTest();
-        test.exercise();
+    @AfterMethod
+    public void recordFailure(ITestResult result){
+        if(ITestResult.FAILURE == result.getStatus()){
+            var camera = (TakesScreenshot)driver;
+            File screeshot = camera.getScreenshotAs(OutputType.FILE);
+            try {
+                Files.move(screeshot, new File("fuentes/screenshots/"+result.getName()+".png"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Screenshot taken: "+screeshot.getAbsolutePath());
+        }
     }
+
+    private ChromeOptions getChromeOptions(){
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("disable-infobars");
+        //options.setHeadless(true);
+        return options;
+    }
+
+    /*Clase Cookie y formas de manejar las cookies del aplicativo*/
+
+    private void setCookies(){
+        Cookie cookie = new Cookie.Builder("ChocolatCookie", "Test123")
+                .domain("the-internet.herokuapp.com")
+                .build();
+        driver.manage().addCookie(cookie);
+    }
+
 
 }
